@@ -836,7 +836,7 @@ section {
 
 /* The flip card container */
 .flip-card {
-  height: 160px;
+  height: 180px;
   perspective: 900px;
   cursor: pointer;
 }
@@ -1480,4 +1480,3 @@ footer {
       inset 0 1px 1px rgba(255, 255, 255, 0.1);
   }
 }
-
