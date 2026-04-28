@@ -247,9 +247,9 @@ nav a:hover {
     linear-gradient(
       to top,
       rgba(0, 0, 0, 0.96) 0%,
-      rgba(0, 0, 0, 0.65) 40%,
-      rgba(0, 0, 0, 0.25) 70%,
-      rgba(0, 0, 0, 0.15) 100%
+      rgba(0, 0, 0, 0.65) 10%,
+      rgba(0, 0, 0, 0.25) 20%,
+      rgba(0, 0, 0, 0.15) 40%
     ),
     linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, transparent 60%);
 }
@@ -1580,7 +1580,9 @@ footer {
 }
 
 .svc-book-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   background: var(--blue);
   color: var(--white);
   font-family: var(--font-head);
@@ -1596,6 +1598,28 @@ footer {
     transform 0.1s;
   position: relative;
   z-index: 2;
+}
+
+.svc-book-btn::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.svc-flip-card.selected .svc-book-btn::before {
+  background: #fff;
+  border-color: #fff;
+  content: "✓";
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .svc-book-btn:hover {
@@ -1645,7 +1669,9 @@ footer {
 }
 
 .svc-book-btn-back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   margin-top: 8px;
   background: var(--blue);
   color: var(--white);
@@ -1661,6 +1687,28 @@ footer {
   position: relative;
   z-index: 2;
   align-self: flex-start;
+}
+
+.svc-book-btn-back::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.svc-flip-card.selected .svc-book-btn-back::before {
+  background: #fff;
+  border-color: #fff;
+  content: "✓";
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .svc-book-btn-back:hover {
