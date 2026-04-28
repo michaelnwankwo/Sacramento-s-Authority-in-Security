@@ -20,59 +20,33 @@
     <!-- ══════════════════════════════════════════
      TOP BAR
      ══════════════════════════════════════════ -->
-    <div class="top-bar">
-      Sacramento Branch &nbsp;·&nbsp; Licensed &amp; Bonded &nbsp;·&nbsp;
-      <strong>PPO120130</strong> &nbsp;·&nbsp; 24/7 Dispatch
-    </div>
+    <!-- <div class="top-bar">
+     Sacramento's Licensed Security Authority &nbsp;·&nbsp; <strong>PPO 120130</strong> &nbsp;·&nbsp; Available 24 / 7
+    </div> -->
 
     <!-- ══════════════════════════════════════════
      HEADER
      ══════════════════════════════════════════ -->
     <header>
       <a href="#home" class="logo">
-        <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
-          <path
-            d="M21 3L4 9.5V21C4 30.5 11.5 38.5 21 41C30.5 38.5 38 30.5 38 21V9.5L21 3Z"
-            fill="#0047AB"
-            fill-opacity="0.15"
-            stroke="#0047AB"
-            stroke-width="1.5"
-          />
-          <path
-            d="M21 8L9 13.5V21C9 28.5 14.5 35 21 37C27.5 35 33 28.5 33 21V13.5L21 8Z"
-            fill="#0047AB"
-            fill-opacity="0.22"
-          />
-          <text
-            x="21"
-            y="26"
-            text-anchor="middle"
-            font-family="Montserrat,sans-serif"
-            font-size="11"
-            font-weight="900"
-            fill="#FFFFFF"
-          >
-            PSG
-          </text>
-        </svg>
-        <div class="logo-text">
-          <span class="name">Professional Security Guard Inc.</span>
-          <span class="branch">Sacramento Branch &nbsp;·&nbsp; PPO120130</span>
-        </div>
-      </a>
+            <div class="logo-img-wrap">
+            <img src="images/logo.png" alt="PSG Logo" class="logo-img"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="logo-fallback">PSG</div>
+            </div>
+            <div class="logo-text">
+            <span class="name">Professional Security Guard</span>
+            <span class="branch">Sacramento Branch <span class="license">PPO 120130</span></span> 
+            </div>
+        </a>
 
-        <button class="hamburger" aria-label="Toggle menu"
-        onclick="this.classList.toggle('active'); document.getElementById('main-nav').classList.toggle('open'); document.body.classList.toggle('nav-open');">
-            <span></span><span></span><span></span>
-         </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+             <span></span><span></span><span></span>
+        </button>
 
       <nav id="main-nav">
 
-        <button class="nav-close" onclick="
-            document.getElementById('main-nav').classList.remove('open');
-            document.querySelector('.hamburger').classList.remove('active');
-            document.body.classList.remove('nav-open');
-        " aria-label="Close menu">✕</button>
+        <button class="nav-close" id="nav-close" aria-label="Close menu">✕</button>
 
         <a href="#booking" onclick="document.getElementById('main-nav').classList.remove('open'); document.querySelector('.hamburger').classList.remove('active'); document.body.classList.remove('nav-open');">Services</a>
         <a href="#areas" onclick="document.getElementById('main-nav').classList.remove('open'); document.querySelector('.hamburger').classList.remove('active'); document.body.classList.remove('nav-open');">Areas</a>
@@ -86,17 +60,13 @@
     <!-- ══════════════════════════════════════════
      HERO
      ══════════════════════════════════════════ -->
-    <section class="hero" id="home">
+    <!-- <section class="hero" id="home">
       <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          Licensed · PPO120130 · Sacramento, CA
-        </div>
 
         <h1>Sacramento's<br /><em>Authority</em><br />in Security.</h1>
 
         <p class="hero-sub">
-          30 years of Los Angeles-forged excellence, now protecting Sacramento.
+          30 years of forged excellence, now protecting Sacramento.
           Elite personnel. Proven protocol. Unwavering presence.
         </p>
 
@@ -105,278 +75,255 @@
           <a href="tel:+19165550100" class="btn btn-outline">Call Us 24/7</a>
         </div>
 
-        <div class="hero-stats">
-          <div>
-            <div class="stat-num">30+</div>
-            <div class="stat-lbl">Years Experience</div>
-          </div>
-          <div>
-            <div class="stat-num">500+</div>
-            <div class="stat-lbl">Clients Protected</div>
-          </div>
-          <div>
-            <div class="stat-num">24/7</div>
-            <div class="stat-lbl">Response Ready</div>
-          </div>
-          <div>
-            <div class="stat-num">5</div>
-            <div class="stat-lbl">Cities Covered</div>
-          </div>
-        </div>
-      </div>
+        
+      </div> -->
+        <section class="hero" id="home">
 
-      <!-- Phase 4: Replace with composited manager photo -->
-      <div class="hero-visual">
-        <img
-          src="hero.png"
-          alt="PSG Sacramento Branch Manager"
-          class="authority-photo"
-        />
-      </div>
-    </section>
+            <!-- Full bleed background image -->
+            <div class="hero-bg-wrap">
+                <img src="hero.png" alt="PSG Sacramento" class="hero-bg-img">
+                <div class="hero-bg-overlay"></div>
+            </div>
 
-    <!-- ══════════════════════════════════════════
-     TRUST BAR
-     ══════════════════════════════════════════ -->
-    <div class="trust-bar">
-      <div class="trust-item">
-        <span class="trust-val">PPO120130</span>
-        <span class="trust-lbl">State License</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-val">$2M+</span>
-        <span class="trust-lbl">Liability Coverage</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-val">100%</span>
-        <span class="trust-lbl">Background Checked</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-val">Bonded &amp; Insured</span>
-        <span class="trust-lbl">Full Coverage</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-val">0</span>
-        <span class="trust-lbl">Unreported Incidents</span>
-      </div>
-    </div>
+            <!-- Content -->
+            <div class="hero-content">
+                <h1>Sacramento's<br /><em>Authority</em><br />in Security.</h1>
+                <!-- <p class="hero-sub">
+                Elite personnel. Proven protocol. Unwavering presence —
+                keeping Sacramento's businesses, events and communities safe around the clock.
+                </p> -->
+                <div class="hero-actions">
+                <a href="#request-form" class="btn btn-solid">Book security services</a>
+                <a href="tel:+19165550100" class="btn btn-outline">Call 24 / 7</a>
+                </div>
+            </div>
+
+        </section>
 
     <!-- ══════════════════════════════════════════
      BOOKING — SERVICE SELECTOR
      ══════════════════════════════════════════ -->
-    <section id="booking">
-      <div class="eyebrow">Select Your Services</div>
-      <h2 class="sec-title">Uniformed Service Selector</h2>
-      <p class="sec-sub">
-        Choose all services that apply. Our Sacramento team will design your
-        custom security plan
-      </p>
 
-      <div class="booking-wrap">
         <!-- Service Grid -->
-        <div>
-          <div class="service-grid" id="service-grid">
-            <div class="svc-card">
-              <input type="checkbox" id="s1" value="Business Security" />
-              <label class="svc-label" for="s1">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🏢</div>
-                <div class="svc-name">Business Security</div>
-              </label>
-            </div>
+        <section id="booking">
+             <div class="eyebrow">What We Offer</div>
+            <h2 class="sec-title">Uniformed Services</h2>
+                <p class="sec-sub">Select a service to learn more. Book directly from any card.</p>
 
-            <div class="svc-card">
-              <input type="checkbox" id="s2" value="Commercial Security" />
-              <label class="svc-label" for="s2">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🏬</div>
-                <div class="svc-name">Commercial Security</div>
-              </label>
-            </div>
+                <div class="svc-flip-grid">
 
-            <div class="svc-card">
-              <input type="checkbox" id="s3" value="Residential Security" />
-              <label class="svc-label" for="s3">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🏡</div>
-                <div class="svc-name">Residential Security</div>
-              </label>
-            </div>
+                    <!-- Business Security -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
 
-            <div class="svc-card">
-              <input type="checkbox" id="s4" value="Vehicle Patrol" />
-              <label class="svc-label" for="s4">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🚔</div>
-                <div class="svc-name">Vehicle Patrol</div>
-              </label>
-            </div>
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="buisness.jpg" alt="Business Security" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Business Security</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
 
-            <div class="svc-card">
-              <input type="checkbox" id="s5" value="Construction Security" />
-              <label class="svc-label" for="s5">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🏗️</div>
-                <div class="svc-name">Construction Security</div>
-              </label>
-            </div>
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🏢</div>
+                            <h3>Business Security</h3>
+                            <p>Elite corporate protection for personnel and high-value physical assets.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
 
-            <div class="svc-card">
-              <input type="checkbox" id="s6" value="Event Security" />
-              <label class="svc-label" for="s6">
-                <div class="chkbox"></div>
-                <div class="svc-icon">🎪</div>
-                <div class="svc-name">Event Security</div>
-              </label>
-            </div>
+                    </div>
+                    </div>
 
-            <div class="svc-card">
-              <input type="checkbox" id="s7" value="CCTV / Surveillance" />
-              <label class="svc-label" for="s7">
-                <div class="chkbox"></div>
-                <div class="svc-icon">📹</div>
-                <div class="svc-name">CCTV / Surveillance</div>
-              </label>
-            </div>
+                    <!-- Commercial Security -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
 
-            <div class="svc-card">
-              <input type="checkbox" id="s8" value="Uniformed Guards" />
-              <label class="svc-label" for="s8">
-                <div class="chkbox"></div>
-                <div class="svc-icon">👮</div>
-                <div class="svc-name">Uniformed Guards</div>
-              </label>
-            </div>
-          </div>
-          <!-- /service-grid -->
-        </div>
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="commercial.jpg" alt="Commercial Security" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Commercial Security</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
 
-        <!-- Booking Sidebar -->
-        <div class="booking-sidebar">
-          <div class="summary-box">
-            <h3>📋 Your Request</h3>
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🏬</div>
+                            <h3>Commercial Security</h3>
+                            <p>Strategic retail loss prevention ensuring a safe, secure shopping environment.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
 
-            <div id="selected-list">
-              <p class="no-sel">Select services from the grid →</p>
-            </div>
+                    </div>
+                    </div>
 
-            <div class="form-fields">
-              <input type="text" id="f-name" placeholder="Full Name *" />
-              <input type="tel" id="f-phone" placeholder="Phone Number *" />
-              <input type="email" id="f-email" placeholder="Email Address *" />
-              <input
-                type="text"
-                id="f-location"
-                placeholder="Your City / Location"
-              />
-              <textarea
-                id="f-notes"
-                rows="3"
-                placeholder="Additional details (optional)…"
-              ></textarea>
-            </div>
+                    <!-- Residential Security -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
 
-            <button class="book-btn" id="book-btn">
-              ⚡ Book Security Services
-            </button>
-            <p class="lic-note">
-              License PPO120130 · Custom quotes only · No pricing listed
-            </p>
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="residential.jpg" alt="Residential Security" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Residential Security</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
 
-            <div class="form-success" id="form-success">
-              <span class="s-icon">✅</span>
-              <h4>Request Received!</h4>
-              <p>Our Sacramento team will contact you within 30 minutes.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /booking-wrap -->
-    </section>
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🏡</div>
+                            <h3>Residential Security</h3>
+                            <p>24/7 professional safeguarding for private estates and gated communities.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
 
-    <!-- ══════════════════════════════════════════
-     EQUIPMENT SLIDER
-     ══════════════════════════════════════════ -->
-    <section id="equipment">
-      <div class="eyebrow">Deployed Technology</div>
-      <h2 class="sec-title">Professional Equipment</h2>
-      <p class="sec-sub">
-        Every officer deploys with industry-leading tools — maximizing
-        situational awareness and evidence integrity.
-      </p>
+                    </div>
+                    </div>
 
-        <div class="carousel-viewport">
-            <div class="carousel-track" id="carousel-track">
+                    <!-- Vehicle Patrol -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
 
-              <!-- Original 6 cards -->
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="camera.jpg" alt="Body-Worn Cameras">
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="vehicle.jpg" alt="Vehicle Patrol" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Vehicle Patrol</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
+
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🚔</div>
+                            <h3>Vehicle Patrol</h3>
+                            <p>Rapid mobile units providing high-visibility deterrence across large perimeters.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <!-- Construction Security -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
+
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="construction.jpg" alt="Construction Security" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Construction Security</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
+
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🏗️</div>
+                            <h3>Construction Security</h3>
+                            <p>Specialized site oversight preventing equipment theft and unauthorized entry.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <!-- Event Security -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
+
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="event.jpg" alt="Event Security" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Event Security</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
+
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">🎪</div>
+                            <h3>Event Security</h3>
+                            <p>Expert crowd management and venue safety for secure, orderly gatherings.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <!-- CCTV -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
+
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="cctv.jpg" alt="CCTV Surveillance" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">CCTV / Surveillance</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
+
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">📹</div>
+                            <h3>CCTV / Surveillance</h3>
+                            <p>24/7 technical monitoring using advanced systems for constant property oversight.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <!-- Uniformed Guards -->
+                    <div class="svc-flip-card" tabindex="0">
+                    <div class="svc-flip-inner">
+
+                        <div class="svc-flip-front">
+                            <span class="svc-check-badge">✓</span> 
+                        <img src="gaurds.jpg" alt="Uniformed Guards" class="svc-bg-img">
+                        <div class="svc-flip-overlay"></div>
+                        <div class="svc-flip-content">
+                            <div class="svc-flip-name">Uniformed Guards</div>
+                            <a href="#mime" class="svc-book-btn" >Book Now</a>
+                        </div>
+                        </div>
+
+                        <div class="svc-flip-back">
+                        <div class="svc-flip-back-inner">
+                            <div class="svc-back-icon">👮</div>
+                            <h3>Uniformed Guards</h3>
+                            <p>A disciplined, authoritative presence for professional access control and defense.</p>
+                            <a href="#mime" class="svc-book-btn-back" >Book Now</a>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
                 </div>
-                <div class="equip-info">
-                    <h4>Body-Worn Cameras</h4>
-                    <p>4K footage, 12-hour battery, cloud-synced evidence capture.</p>
-                </div>
-                </div>
+        </section>
 
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="radio.jpg" alt="Digital Radios">
-                </div>
-                <div class="equip-info">
-                    <h4>Digital Radios</h4>
-                    <p>Encrypted two-way communication across all units and dispatch.</p>
-                </div>
-                </div>
-
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="fla.jpg" alt="Tactical Lighting">
-                </div>
-                <div class="equip-info">
-                    <h4>Tactical Lighting</h4>
-                    <p>1,000-lumen tactical flashlights for low-visibility perimeter work.</p>
-                </div>
-                </div>
-
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="ve.jpg" alt="Marked Patrol Vehicles">
-                </div>
-                <div class="equip-info">
-                    <h4>Marked Patrol Vehicles</h4>
-                    <p>GPS-tracked, fully marked patrol SUVs with emergency lighting.</p>
-                </div>
-                </div>
-
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="cctv.jpg" alt="CCTV Systems">
-                </div>
-                <div class="equip-info">
-                    <h4>CCTV Systems</h4>
-                    <p>HD install, monitoring &amp; maintenance for commercial and residential.</p>
-                </div>
-                </div>
-
-                <div class="equip-card">
-                <div class="equip-img">
-                    <img src="uniform.jpg" alt="Uniforms and ID">
-                </div>
-                <div class="equip-info">
-                    <h4>Uniforms &amp; ID</h4>
-                    <p>Clearly identified, professionally uniformed authority presence.</p>
-                </div>
-                </div>
-                
-
-                <!-- Clones for seamless loop — duplicated by JS, listed here as fallback -->
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════
+             <!-- ══════════════════════════════════════════
      SERVICE AREAS — FLIP CARDS
      ══════════════════════════════════════════ -->
     <section id="areas">
@@ -490,13 +437,177 @@
 
       <!-- SEO Block -->
       <div class="areas-seo">
-        <strong style="color: #9e9e9e">Professional Security Guard Inc.</strong>
-        (License PPO120130) provides licensed security services throughout
+        <strong style="color: #9e9e9e">Professional Security Guard Inc.</strong> provides licensed security services throughout
         <strong style="color: #9e9e9e">Sacramento, CA</strong>,
         <strong style="color: #9e9e9e">Elk Grove, CA</strong>,
         <strong style="color: #9e9e9e">Roseville, CA</strong>,
         <strong style="color: #9e9e9e">Folsom, CA</strong>
     </section>
+
+        
+
+        <!-- Booking Sidebar -->
+         <section id="mime">
+                <div class="booking-sidebar">
+                <div class="summary-box">
+                    <h3>📋 Your Request</h3>
+
+                    <div id="selected-list">
+                    <p class="no-sel">Select services from the grid →</p>
+                    </div>
+
+                    <div class="form-fields">
+                        <input type="text"  id="f-name"     placeholder="Full Name *">
+                        <input type="tel"   id="f-phone"    placeholder="Phone Number *">
+                        <input type="email" id="f-email"    placeholder="Email Address *">
+                        <input type="text"  id="f-location" placeholder="Your City / Location">
+                        <textarea id="f-notes" rows="3" placeholder="Additional details (optional)…"></textarea>
+                    </div>
+
+                    <!-- Compact service checklist -->
+                    <div class="form-checklist">
+                    <div class="form-checklist-title">Services Required</div>
+                    <div class="form-checklist-grid">
+                        <label class="fc-item" data-service="Business Security">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Business Security</span>
+                        </label>
+                        <label class="fc-item" data-service="Commercial Security">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Commercial Security</span>
+                        </label>
+                        <label class="fc-item" data-service="Residential Security">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Residential Security</span>
+                        </label>
+                        <label class="fc-item" data-service="Vehicle Patrol">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Vehicle Patrol</span>
+                        </label>
+                        <label class="fc-item" data-service="Construction Security">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Construction Security</span>
+                        </label>
+                        <label class="fc-item" data-service="Event Security">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Event Security</span>
+                        </label>
+                        <label class="fc-item" data-service="CCTV / Surveillance">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">CCTV / Surveillance</span>
+                        </label>
+                        <label class="fc-item" data-service="Uniformed Guards">
+                        <span class="fc-box"></span>
+                        <span class="fc-label">Uniformed Guards</span>
+                        </label>
+                    </div>
+                    </div>
+
+                    <button class="book-btn" id="book-btn">
+                    ⚡ Book Security Services
+                    </button>
+                    <p class="lic-note">
+                    · Custom quotes only · No pricing listed
+                    </p>
+
+                    <div class="form-success" id="form-success">
+                    <span class="s-icon">✅</span>
+                    <h4>Request Received!</h4>
+                    <p>Our Sacramento team will contact you within 30 minutes.</p>
+                    </div>
+                </div>
+                </div>
+             </div>
+        </section>
+      <!-- /booking-wrap -->
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     EQUIPMENT SLIDER
+     ══════════════════════════════════════════ -->
+    <section id="equipment">
+      <div class="eyebrow">Deployed Technology</div>
+      <h2 class="sec-title">Professional Equipment</h2>
+      <p class="sec-sub">
+        Every officer deploys with industry-leading tools — maximizing
+        situational awareness and evidence integrity.
+      </p>
+
+        <div class="carousel-viewport">
+            <div class="carousel-track" id="carousel-track">
+
+              <!-- Original 6 cards -->
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="camera.jpg" alt="Body-Worn Cameras">
+                </div>
+                <div class="equip-info">
+                    <h4>Body-Worn Cameras</h4>
+                    <p>4K footage, 12-hour battery, cloud-synced evidence capture.</p>
+                </div>
+                </div>
+
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="radio.jpg" alt="Digital Radios">
+                </div>
+                <div class="equip-info">
+                    <h4>Digital Radios</h4>
+                    <p>Encrypted two-way communication across all units and dispatch.</p>
+                </div>
+                </div>
+
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="fla.jpg" alt="Tactical Lighting">
+                </div>
+                <div class="equip-info">
+                    <h4>Tactical Lighting</h4>
+                    <p>1,000-lumen tactical flashlights for low-visibility perimeter work.</p>
+                </div>
+                </div>
+
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="ve.jpg" alt="Marked Patrol Vehicles">
+                </div>
+                <div class="equip-info">
+                    <h4>Marked Patrol Vehicles</h4>
+                    <p>GPS-tracked, fully marked patrol SUVs with emergency lighting.</p>
+                </div>
+                </div>
+
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="cctv.jpg" alt="CCTV Systems">
+                </div>
+                <div class="equip-info">
+                    <h4>CCTV Systems</h4>
+                    <p>HD install, monitoring &amp; maintenance for commercial and residential.</p>
+                </div>
+                </div>
+
+                <div class="equip-card">
+                <div class="equip-img">
+                    <img src="uniform.jpg" alt="Uniforms and ID">
+                </div>
+                <div class="equip-info">
+                    <h4>Uniforms &amp; ID</h4>
+                    <p>Clearly identified, professionally uniformed authority presence.</p>
+                </div>
+                </div>
+                
+
+                <!-- Clones for seamless loop — duplicated by JS, listed here as fallback -->
+
+            </div>
+        </div>
+    </section>
+
+  
+
+   
 
     <!-- ══════════════════════════════════════════
      ABOUT
@@ -507,8 +618,7 @@
         <h2 class="sec-title">30 Years of<br />Proven Protection</h2>
 
         <p>
-          Professional Security Guard Inc. was built from the ground up in Los
-          Angeles — one of the most demanding security environments in the
+          Professional Security Guard Inc. was built from the ground up as — one of the most demanding security environments in the
           nation. For three decades, we protected high-profile businesses,
           events, and communities across Southern California.
         </p>
@@ -530,8 +640,7 @@
           <div class="t-item">
             <div class="t-year">1994</div>
             <div class="t-text">
-              Founded in Los Angeles. First contracts with commercial retail and
-              hospitality clients.
+              First contracts with commercial retail and hospitality clients.
             </div>
           </div>
           <div class="t-item">
@@ -559,6 +668,28 @@
 
       
     </section>
+
+       <!-- ══════════════════════════════════════════
+     TRUST BAR
+     ══════════════════════════════════════════ -->
+    <div class="trust-bar">
+      <div class="trust-item">
+        <span class="trust-val">$2M+</span>
+        <span class="trust-lbl">Liability Coverage</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-val">100%</span>
+        <span class="trust-lbl">Background Checked</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-val">Bonded &amp; Insured</span>
+        <span class="trust-lbl">Full Coverage</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-val">0</span>
+        <span class="trust-lbl">Unreported Incidents</span>
+      </div>
+    </div>
 
     <!-- ══════════════════════════════════════════
      CONTACT
@@ -607,13 +738,6 @@
               <div class="c-val">Mon–Fri 8AM–6PM · Dispatch 24/7</div>
             </div>
           </div>
-          <div class="contact-detail">
-            <div class="c-icon">🪪</div>
-            <div>
-              <div class="c-lbl">State License</div>
-              <div class="c-val">PPO120130 — California BSIS</div>
-            </div>
-          </div>
         </div>
 
         <div>
@@ -655,22 +779,9 @@
         <div class="footer-brand">
           <span class="fn">Professional Security Guard Inc.</span>
           <p>
-            Sacramento's licensed security authority. Built on 30 years of Los
-            Angeles discipline, now protecting Northern California's businesses,
+            Sacramento's licensed security authority. Built on 30 years of discipline, now protecting Northern California's businesses,
             events, and communities.
           </p>
-          <div class="lic-badge">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path
-                d="M6 1L1.5 2.8V6C1.5 8.7 3.5 11.1 6 11.8C8.5 11.1 10.5 8.7 10.5 6V2.8L6 1Z"
-                fill="#0047AB"
-                fill-opacity="0.3"
-                stroke="#5B9BD5"
-                stroke-width="0.8"
-              />
-            </svg>
-            License PPO120130
-          </div>
         </div>
 
         <div class="footer-cols-row">
@@ -726,6 +837,6 @@
       ✅ Request sent! We'll call you within 30 min.
     </div>
 
-    <script src="main.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

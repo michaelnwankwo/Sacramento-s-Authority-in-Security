@@ -1,247 +1,291 @@
-/* ═══════════════════════════════════════════════════════
-   PROFESSIONAL SECURITY GUARD INC. — SACRAMENTO BRANCH
-   Main JavaScript
-   ═══════════════════════════════════════════════════════ */
-
 "use strict";
 
-/* ──────────────────────────────────────
-   1. MOBILE NAVIGATION
-   ────────────────────────────────────── */
-
+/* ── NAV ── */
 (function initNav() {
   const hamburger = document.getElementById("hamburger");
   const nav = document.getElementById("main-nav");
-  if (!hamburger || !nav) return;
+  const navClose = document.getElementById("nav-close");
+  if (!nav) return;
 
-  hamburger.addEventListener("click", function (e) {
-    e.stopPropagation();
-    nav.classList.toggle("open");
-  });
+  function openNav() {
+    nav.classList.add("open");
+    if (hamburger) hamburger.classList.add("active");
+    document.body.classList.add("nav-open");
+  }
+
+  function closeNav() {
+    nav.classList.remove("open");
+    if (hamburger) hamburger.classList.remove("active");
+    document.body.classList.remove("nav-open");
+  }
+
+  if (hamburger)
+    hamburger.addEventListener("click", () => {
+      nav.classList.contains("open") ? closeNav() : openNav();
+    });
+
+  if (navClose) navClose.addEventListener("click", closeNav);
 
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("open");
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
-      nav.classList.remove("open");
-    }
+    link.addEventListener("click", closeNav);
   });
 })();
 
-/* ──────────────────────────────────────
-   2. FLIP CARDS — TAP TOGGLE (MOBILE)
-      Hover handles desktop via CSS.
-      JS handles tap for touch devices.
-   ────────────────────────────────────── */
-(function initFlipCards() {
-  const cards = document.querySelectorAll(".flip-card");
+/* ── HERO AUTO-FLIP ── */
+(function initHeroFlip() {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
 
-  cards.forEach((card) => {
-    // TAP: toggle the .flipped class
-    card.addEventListener("click", () => {
-      // If another card is flipped, unflip it first
-      cards.forEach((other) => {
-        if (other !== card) other.classList.remove("flipped");
-      });
+  const dotsWrap = document.createElement("div");
+  dotsWrap.className = "hero-dots";
+  dotsWrap.innerHTML = `
+    <button class="hero-dot active" data-face="0" aria-label="Show image"></button>
+    <button class="hero-dot"        data-face="1" aria-label="Show text"></button>
+  `;
+  hero.appendChild(dotsWrap);
+
+  const dots = dotsWrap.querySelectorAll(".hero-dot");
+  let current = 0;
+  let timer = null;
+
+  function goTo(index) {
+    current = index;
+    current === 1
+      ? hero.classList.add("hero-flipped")
+      : hero.classList.remove("hero-flipped");
+    dots.forEach((d, i) => d.classList.toggle("active", i === current));
+  }
+
+  function next() {
+    goTo(current === 0 ? 1 : 0);
+  }
+
+  function startTimer() {
+    timer = setInterval(next, 3000);
+  }
+  function stopTimer() {
+    clearInterval(timer);
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+      stopTimer();
+      goTo(i);
+      startTimer();
+    });
+  });
+
+  hero.addEventListener("mouseenter", stopTimer);
+  hero.addEventListener("mouseleave", startTimer);
+  hero.addEventListener("touchstart", stopTimer, { passive: true });
+  hero.addEventListener("touchend", startTimer, { passive: true });
+
+  startTimer();
+})();
+
+/* ── UNIFIED SELECTION LOGIC ── */
+(function initSelectionLogic() {
+  const selectedServices = new Set();
+  let selectedArea = null;
+
+  const svcCards = document.querySelectorAll(".svc-flip-card");
+  const fcItems = document.querySelectorAll(".fc-item");
+  const areaCities = document.querySelectorAll(".flip-card");
+  const selectedList = document.getElementById("selected-list");
+
+  function updateSummary() {
+    if (!selectedList) return;
+    const allSelected = [...selectedServices];
+    if (allSelected.length === 0 && !selectedArea) {
+      selectedList.innerHTML = '<p class="no-sel">Select services above →</p>';
+      return;
+    }
+    let html = "";
+    allSelected.forEach((svc) => {
+      html += `<div class="sel-item">${svc}</div>`;
+    });
+    if (selectedArea) {
+      html += `<div class="sel-item sel-area">📍 ${selectedArea}</div>`;
+    }
+    selectedList.innerHTML = html;
+  }
+
+  function syncCardToChecklist(name, state) {
+    fcItems.forEach((item) => {
+      if (item.dataset.service === name)
+        item.classList.toggle("fc-checked", state);
+    });
+  }
+
+  function syncChecklistToCard(name, state) {
+    svcCards.forEach((card) => {
+      const n = card.querySelector(".svc-flip-name")?.textContent?.trim();
+      if (n === name) card.classList.toggle("selected", state);
+    });
+  }
+
+  /* Service cards */
+  svcCards.forEach((card) => {
+    card.addEventListener("click", function (e) {
+      if (
+        e.target.closest(".svc-book-btn") ||
+        e.target.closest(".svc-book-btn-back")
+      )
+        return;
+
+      const name = card.querySelector(".svc-flip-name")?.textContent?.trim();
+      if (!name) return;
+
       card.classList.toggle("flipped");
+
+      if (selectedServices.has(name)) {
+        selectedServices.delete(name);
+        card.classList.remove("selected");
+        syncCardToChecklist(name, false);
+      } else {
+        selectedServices.add(name);
+        card.classList.add("selected");
+        syncCardToChecklist(name, true);
+      }
+      updateSummary();
     });
 
-    // KEYBOARD: Enter or Space triggers flip
-    card.addEventListener("keydown", (e) => {
+    card.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         card.click();
       }
-      // Escape closes
-      if (e.key === "Escape") {
-        card.classList.remove("flipped");
+      if (e.key === "Escape") card.classList.remove("flipped");
+    });
+  });
+
+  /* Compact checklist */
+  fcItems.forEach((item) => {
+    item.addEventListener("click", function () {
+      const name = this.dataset.service;
+      if (!name) return;
+      if (selectedServices.has(name)) {
+        selectedServices.delete(name);
+        this.classList.remove("fc-checked");
+        syncChecklistToCard(name, false);
+      } else {
+        selectedServices.add(name);
+        this.classList.add("fc-checked");
+        syncChecklistToCard(name, true);
       }
-    });
-
-    // On desktop hover exit, remove flipped so CSS hover takes back over cleanly
-    card.addEventListener("mouseleave", () => {
-      card.classList.remove("flipped");
+      updateSummary();
     });
   });
 
-  // Close all on outside tap
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".flip-card")) {
-      cards.forEach((c) => c.classList.remove("flipped"));
-    }
-  });
-})();
+  /* City cards */
+  areaCities.forEach((card) => {
+    card.addEventListener("click", function () {
+      const cityName = this.querySelector(".city-name")?.textContent?.trim();
+      if (!cityName) return;
 
-/* ──────────────────────────────────────
-   3. SERVICE SELECTOR — LIVE SUMMARY
-   ────────────────────────────────────── */
-(function initBooking() {
-  const checkboxes = document.querySelectorAll(
-    '#service-grid input[type="checkbox"]',
-  );
-  const selectedList = document.getElementById("selected-list");
+      areaCities.forEach((c) => c.classList.remove("area-selected"));
+      areaCities.forEach((other) => {
+        if (other !== card) other.classList.remove("flipped");
+      });
+      card.classList.toggle("flipped");
+
+      if (selectedArea === cityName) {
+        selectedArea = null;
+      } else {
+        selectedArea = cityName;
+        this.classList.add("area-selected");
+      }
+      updateSummary();
+    });
+
+    card.addEventListener("mouseleave", () => card.classList.remove("flipped"));
+  });
+
+  /* Form submit */
   const bookBtn = document.getElementById("book-btn");
-  const formSuccess = document.getElementById("form-success");
+  if (bookBtn) {
+    bookBtn.addEventListener("click", function () {
+      const name = document.getElementById("f-name")?.value.trim();
+      const phone = document.getElementById("f-phone")?.value.trim();
+      const email = document.getElementById("f-email")?.value.trim();
+      const location = document.getElementById("f-location")?.value.trim();
+      const notes = document.getElementById("f-notes")?.value.trim();
+      const services = [...selectedServices];
 
-  if (!checkboxes.length) return;
+      if (!name || !phone || !email) {
+        alert("Please fill in your name, phone number, and email.");
+        return;
+      }
+      if (services.length === 0) {
+        alert("Please select at least one service.");
+        return;
+      }
 
-  function updateSummary() {
-    const checked = [...checkboxes].filter((cb) => cb.checked);
+      bookBtn.disabled = true;
+      bookBtn.textContent = "Submitting…";
 
-    if (checked.length === 0) {
-      selectedList.innerHTML =
-        '<p class="no-sel">Select services from the grid →</p>';
-    } else {
-      selectedList.innerHTML = checked
-        .map((cb) => `<div class="sel-item">${cb.value}</div>`)
-        .join("");
-    }
-  }
+      const subject = encodeURIComponent(
+        "New PSG Sacramento Request — " + services.join(", "),
+      );
+      const body = encodeURIComponent(
+        "NEW SERVICE REQUEST — PSG SACRAMENTO\n" +
+          "=====================================\n\n" +
+          "Name:         " +
+          name +
+          "\n" +
+          "Phone:        " +
+          phone +
+          "\n" +
+          "Email:        " +
+          email +
+          "\n" +
+          "Location:     " +
+          (location || "Not specified") +
+          "\n" +
+          "Service Area: " +
+          (selectedArea || "Not specified") +
+          "\n" +
+          "Services:     " +
+          services.join(", ") +
+          "\n" +
+          "Notes:        " +
+          (notes || "None") +
+          "\n\n" +
+          "License: PPO120130 · Branch: Sacramento\n" +
+          "Submitted: " +
+          new Date().toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles",
+          }),
+      );
 
-  checkboxes.forEach((cb) => cb.addEventListener("change", updateSummary));
+      window.open(
+        "mailto:sacramento@profsecurity.com?subject=" +
+          subject +
+          "&body=" +
+          body,
+        "_blank",
+      );
 
-  /* ── SUBMIT ── */
-  bookBtn.addEventListener("click", handleSubmit);
-
-  function handleSubmit() {
-    const name = document.getElementById("f-name").value.trim();
-    const phone = document.getElementById("f-phone").value.trim();
-    const email = document.getElementById("f-email").value.trim();
-    const location = document.getElementById("f-location").value.trim();
-    const notes = document.getElementById("f-notes").value.trim();
-    const selected = [...checkboxes]
-      .filter((cb) => cb.checked)
-      .map((cb) => cb.value);
-
-    // Validate
-    if (!name || !phone || !email) {
-      shakeBtn();
-      alert("Please fill in your name, phone number, and email to continue.");
-      return;
-    }
-
-    if (selected.length === 0) {
-      shakeBtn();
-      alert("Please select at least one service.");
-      return;
-    }
-
-    // Disable button / loading state
-    bookBtn.disabled = true;
-    bookBtn.textContent = "Submitting…";
-
-    /* ─── EmailJS Integration ───────────────────────
-       Replace the three placeholder strings below with
-       your real EmailJS credentials from emailjs.com.
-
-       1. Sign up at https://emailjs.com (free tier works)
-       2. Create an Email Service (Gmail, Outlook, etc.)
-       3. Create an Email Template — use these variables:
-            {{name}}     {{phone}}    {{email}}
-            {{location}} {{services}} {{notes}}
-       4. Paste your IDs below and uncomment the block.
-    ──────────────────────────────────────────────── */
-
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // ← replace
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // ← replace
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // ← replace
-
-    const templateParams = {
-      name,
-      phone,
-      email,
-      location: location || "Not specified",
-      services: selected.join(", "),
-      notes: notes || "None",
-      timestamp: new Date().toLocaleString("en-US", {
-        timeZone: "America/Los_Angeles",
-      }),
-      license: "PPO120130",
-    };
-
-    /* ── EmailJS send (uncomment when credentials are set) ──
-    if (typeof emailjs !== 'undefined') {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-        .then(() => onSuccess())
-        .catch(err => {
-          console.error('EmailJS error:', err);
-          // Fallback to mailto
-          sendMailtoFallback(templateParams);
-          onSuccess();
-        });
-    } else {
-      sendMailtoFallback(templateParams);
-      onSuccess();
-    }
-    */
-
-    // ── CURRENT MODE: mailto fallback (works right now, no setup needed)
-    sendMailtoFallback(templateParams);
-    setTimeout(onSuccess, 900);
-  }
-
-  function sendMailtoFallback(p) {
-    const subject = encodeURIComponent(
-      `New PSG Sacramento Lead — ${p.services}`,
-    );
-    const body = encodeURIComponent(
-      `NEW SERVICE REQUEST — PSG SACRAMENTO\n` +
-        `=====================================\n\n` +
-        `Name:      ${p.name}\n` +
-        `Phone:     ${p.phone}\n` +
-        `Email:     ${p.email}\n` +
-        `Location:  ${p.location}\n` +
-        `Services:  ${p.services}\n` +
-        `Notes:     ${p.notes}\n\n` +
-        `Submitted: ${p.timestamp}\n` +
-        `License:   ${p.license} · Branch: Sacramento`,
-    );
-    window.open(
-      `mailto:sacramento@profsecurity.com?subject=${subject}&body=${body}`,
-      "_blank",
-    );
-  }
-
-  function onSuccess() {
-    // Hide form elements
-    document.querySelector(".form-fields").style.display = "none";
-    bookBtn.style.display = "none";
-    document.querySelector(".lic-note").style.display = "none";
-    selectedList.style.display = "none";
-    document.querySelector(".summary-box h3").style.display = "none";
-
-    // Show success state
-    formSuccess.style.display = "block";
-
-    // Reset checkboxes visually
-    checkboxes.forEach((cb) => {
-      cb.checked = false;
+      setTimeout(function () {
+        const ff = document.querySelector(".form-fields");
+        const cl = document.querySelector(".form-checklist");
+        const ln = document.querySelector(".lic-note");
+        const st = document.querySelector(".summary-box h3");
+        const fs = document.getElementById("form-success");
+        if (ff) ff.style.display = "none";
+        if (cl) cl.style.display = "none";
+        if (ln) ln.style.display = "none";
+        if (st) st.style.display = "none";
+        if (selectedList) selectedList.style.display = "none";
+        bookBtn.style.display = "none";
+        if (fs) fs.style.display = "block";
+        showToast("✅ Request sent! We'll call you within 30 min.");
+      }, 900);
     });
-
-    // Show toast
-    showToast("✅ Request sent! We'll call you within 30 min.");
-  }
-
-  function shakeBtn() {
-    bookBtn.style.animation = "shake 0.4s ease";
-    bookBtn.addEventListener(
-      "animationend",
-      () => {
-        bookBtn.style.animation = "";
-      },
-      { once: true },
-    );
   }
 })();
 
-/* ──────────────────────────────────────
-   4. TOAST NOTIFICATION
-   ────────────────────────────────────── */
+/* ── TOAST ── */
 function showToast(message) {
   const toast = document.getElementById("toast");
   if (!toast) return;
@@ -250,89 +294,65 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove("show"), 5000);
 }
 
-/* ──────────────────────────────────────
-   5. SCROLL REVEAL
-   ────────────────────────────────────── */
-(function initReveal() {
-  const targets = document.querySelectorAll(".reveal");
-  if (!targets.length) return;
-
-  const obs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          obs.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 },
-  );
-
-  targets.forEach((el) => obs.observe(el));
-})();
-
-/* ──────────────────────────────────────
-   6. SMOOTH ANCHOR OFFSET
-      Accounts for sticky header height
-   ────────────────────────────────────── */
-(function initAnchorOffset() {
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const target = document.querySelector(this.getAttribute("href"));
-      if (!target) return;
-      e.preventDefault();
-
-      const headerH = document.querySelector("header")?.offsetHeight || 68;
-      const y =
-        target.getBoundingClientRect().top + window.scrollY - headerH - 12;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    });
-  });
-})();
-
-/* ──────────────────────────────────────
-   7. SHAKE KEYFRAME (injected)
-   ────────────────────────────────────── */
-(function injectShakeAnim() {
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes shake {
-      0%,100%{ transform: translateX(0); }
-      20%    { transform: translateX(-6px); }
-      40%    { transform: translateX(6px); }
-      60%    { transform: translateX(-4px); }
-      80%    { transform: translateX(4px); }
-    }
-  `;
-  document.head.appendChild(style);
-})();
-
-/* ──────────────────────────────────────
-   8. EMAILJS LOADER (optional)
-      Uncomment when you have credentials
-   ────────────────────────────────────── */
-/*
-(function loadEmailJS() {
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  script.async = true;
-  document.head.appendChild(script);
-})();
-*/
-
-/* ──────────────────────────────────────
-   EQUIPMENT CAROUSEL — INFINITE CLONE
-   ────────────────────────────────────── */
+/* ── CAROUSEL ── */
 (function initCarousel() {
   const track = document.getElementById("carousel-track");
   if (!track) return;
-
-  // Clone all original cards and append for seamless loop
   const originals = [...track.children];
   originals.forEach((card) => {
     const clone = card.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
     track.appendChild(clone);
   });
+})();
+
+/* ── SCROLL REVEAL ── */
+(function initReveal() {
+  const targets = document.querySelectorAll(".reveal");
+  if (!targets.length) return;
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          obs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12 },
+  );
+  targets.forEach((el) => obs.observe(el));
+})();
+
+/* ── SMOOTH SCROLL + BOOK NOW BUTTONS ── */
+(function initScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const target = document.querySelector(this.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      const headerH = document.querySelector("header")?.offsetHeight || 68;
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY - headerH - 12,
+        behavior: "smooth",
+      });
+    });
+  });
+
+  document
+    .querySelectorAll(".svc-book-btn, .svc-book-btn-back")
+    .forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = document.getElementById("request-form");
+        if (!target) return;
+        const headerH = document.querySelector("header")?.offsetHeight || 68;
+        window.scrollTo({
+          top:
+            target.getBoundingClientRect().top + window.scrollY - headerH - 12,
+          behavior: "smooth",
+        });
+      });
+    });
 })();
