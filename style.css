@@ -1215,14 +1215,14 @@ footer {
     height: 64px;
   }
 
-  .logo-img-wrap {
+  /* .logo-img-wrap {
     width: 36px;
     height: 36px;
-  }
+  } */
 
   .logo-img {
-    width: 36px;
-    height: 36px;
+    width: 70px;
+    height: 70px;
   }
 
   .logo-fallback {
