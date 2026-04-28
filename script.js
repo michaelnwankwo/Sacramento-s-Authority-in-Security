@@ -222,68 +222,67 @@
       }
 
       bookBtn.disabled = true;
-      bookBtn.textContent = "Submitting…";
+bookBtn.textContent = 'Submitting…';
 
-      const subject = encodeURIComponent(
-        "New PSG Sacramento Request — " + services.join(", "),
-      );
-      const body = encodeURIComponent(
-        "NEW SERVICE REQUEST — PSG SACRAMENTO\n" +
-          "=====================================\n\n" +
-          "Name:         " +
-          name +
-          "\n" +
-          "Phone:        " +
-          phone +
-          "\n" +
-          "Email:        " +
-          email +
-          "\n" +
-          "Location:     " +
-          (location || "Not specified") +
-          "\n" +
-          "Service Area: " +
-          (selectedArea || "Not specified") +
-          "\n" +
-          "Services:     " +
-          services.join(", ") +
-          "\n" +
-          "Notes:        " +
-          (notes || "None") +
-          "\n\n" +
-          "License: PPO120130 · Branch: Sacramento\n" +
-          "Submitted: " +
-          new Date().toLocaleString("en-US", {
-            timeZone: "America/Los_Angeles",
-          }),
-      );
+/* ── EmailJS credentials — paste your real values below ── */
+var SERVICE_ID  = 'service_xxxxxxx';   /* ← your Service ID  */
+var TEMPLATE_ID = 'template_xxxxxxx';  /* ← your Template ID */
+var PUBLIC_KEY  = 'xxxxxxxxxxxxxxx';   /* ← your Public Key  */
 
-      window.open(
-        "mailto:sacramento@profsecurity.com?subject=" +
-          subject +
-          "&body=" +
-          body,
-        "_blank",
-      );
+var templateParams = {
+  name:         name,
+  phone:        phone,
+  client_email: email,
+  location:     location     || 'Not specified',
+  area:         selectedArea || 'Not specified',
+  services:     services.join(', '),
+  notes:        notes        || 'None',
+  submitted:    new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+};
 
-      setTimeout(function () {
-        const ff = document.querySelector(".form-fields");
-        const cl = document.querySelector(".form-checklist");
-        const ln = document.querySelector(".lic-note");
-        const st = document.querySelector(".summary-box h3");
-        const fs = document.getElementById("form-success");
-        if (ff) ff.style.display = "none";
-        if (cl) cl.style.display = "none";
-        if (ln) ln.style.display = "none";
-        if (st) st.style.display = "none";
-        if (selectedList) selectedList.style.display = "none";
-        bookBtn.style.display = "none";
-        if (fs) fs.style.display = "block";
-        showToast("✅ Request sent! We'll call you within 30 min.");
-      }, 900);
+emailjs.init(PUBLIC_KEY);
+
+emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+  .then(function() {
+    /* SMS alert — fires after main email succeeds */
+    emailjs.send(SERVICE_ID, 'template_smsxxxxxxx', {
+      name:     name,
+      services: services.join(', ')
     });
-  }
-})();
+    onSuccess();
+  })
+  .catch(function(err) {
+    console.error('EmailJS error:', err);
+    /* Fallback to mailto if EmailJS fails */
+    var subject = encodeURIComponent('New PSG Sacramento Request — ' + services.join(', '));
+    var body    = encodeURIComponent(
+      'Name: ' + name + '\nPhone: ' + phone + '\nEmail: ' + email +
+      '\nArea: ' + (selectedArea || 'Not specified') +
+      '\nServices: ' + services.join(', ') +
+      '\nNotes: ' + (notes || 'None')
+    );
+    window.open('mailto:sacramento@profsecurity.com?subject=' + subject + '&body=' + body, '_blank');
+    onSuccess();
+  });
+
+function onSuccess() {
+  setTimeout(function() {
+    var ff = document.querySelector('.form-fields');
+    var cl = document.querySelector('.form-checklist');
+    var ln = document.querySelector('.lic-note');
+    var st = document.querySelector('.summary-box h3');
+    var fs = document.getElementById('form-success');
+    if (ff) ff.style.display = 'none';
+    if (cl) cl.style.display = 'none';
+    if (ln) ln.style.display = 'none';
+    if (st) st.style.display = 'none';
+    if (selectedList) selectedList.style.display = 'none';
+    bookBtn.style.display = 'none';
+    if (fs) fs.style.display = 'block';
+    showToast('✅ Request sent! We\'ll call you within 30 min.');
+  }, 900);
+}
+}());
 
 /* ── TOAST ── */
 function showToast(message) {
