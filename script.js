@@ -1,10 +1,12 @@
 "use strict";
 
-/* ── NAV ── */
+/* ─────────────────────────────
+   NAV
+───────────────────────────── */
 (function initNav() {
-  const hamburger = document.getElementById("hamburger");
-  const nav = document.getElementById("main-nav");
-  const navClose = document.getElementById("nav-close");
+  var hamburger = document.getElementById("hamburger");
+  var nav = document.getElementById("main-nav");
+  var navClose = document.getElementById("nav-close");
   if (!nav) return;
 
   function openNav() {
@@ -19,47 +21,59 @@
     document.body.classList.remove("nav-open");
   }
 
-  if (hamburger)
-    hamburger.addEventListener("click", () => {
+  if (hamburger) {
+    hamburger.addEventListener("click", function (e) {
+      e.stopPropagation();
       nav.classList.contains("open") ? closeNav() : openNav();
     });
+  }
 
   if (navClose) navClose.addEventListener("click", closeNav);
 
-  nav.querySelectorAll("a").forEach((link) => {
+  nav.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", closeNav);
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!nav.contains(e.target) && hamburger && !hamburger.contains(e.target)) {
+      closeNav();
+    }
   });
 })();
 
-/* ── HERO AUTO-FLIP ── */
+/* ─────────────────────────────
+   HERO AUTO-FLIP
+───────────────────────────── */
 (function initHeroFlip() {
-  const hero = document.querySelector(".hero");
+  var hero = document.querySelector(".hero");
   if (!hero) return;
 
-  const dotsWrap = document.createElement("div");
+  var dotsWrap = document.createElement("div");
   dotsWrap.className = "hero-dots";
-  dotsWrap.innerHTML = `
-    <button class="hero-dot active" data-face="0" aria-label="Show image"></button>
-    <button class="hero-dot"        data-face="1" aria-label="Show text"></button>
-  `;
+  dotsWrap.innerHTML =
+    '<button class="hero-dot active" aria-label="Show image"></button>' +
+    '<button class="hero-dot" aria-label="Show text"></button>';
   hero.appendChild(dotsWrap);
 
-  const dots = dotsWrap.querySelectorAll(".hero-dot");
-  let current = 0;
-  let timer = null;
+  var dots = dotsWrap.querySelectorAll(".hero-dot");
+  var current = 0;
+  var timer = null;
 
   function goTo(index) {
     current = index;
-    current === 1
-      ? hero.classList.add("hero-flipped")
-      : hero.classList.remove("hero-flipped");
-    dots.forEach((d, i) => d.classList.toggle("active", i === current));
+    if (current === 1) {
+      hero.classList.add("hero-flipped");
+    } else {
+      hero.classList.remove("hero-flipped");
+    }
+    dots.forEach(function (d, i) {
+      d.classList.toggle("active", i === current);
+    });
   }
 
   function next() {
     goTo(current === 0 ? 1 : 0);
   }
-
   function startTimer() {
     timer = setInterval(next, 3000);
   }
@@ -67,8 +81,8 @@
     clearInterval(timer);
   }
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => {
+  dots.forEach(function (dot, i) {
+    dot.addEventListener("click", function () {
       stopTimer();
       goTo(i);
       startTimer();
@@ -83,49 +97,118 @@
   startTimer();
 })();
 
-/* ── UNIFIED SELECTION LOGIC ── */
+/* ─────────────────────────────
+   SMOOTH SCROLL HELPER
+───────────────────────────── */
+function smoothScrollTo(el) {
+  var headerH = (document.querySelector("header") || {}).offsetHeight || 68;
+  window.scrollTo({
+    top: el.getBoundingClientRect().top + window.scrollY - headerH - 12,
+    behavior: "smooth",
+  });
+}
+
+/* ─────────────────────────────
+   BOOK NOW BUTTONS
+   Capture phase fires BEFORE card click handler
+───────────────────────────── */
+document
+  .querySelectorAll(".svc-book-btn, .svc-book-btn-back")
+  .forEach(function (btn) {
+    btn.addEventListener(
+      "click",
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var target = document.getElementById("request-form");
+        if (target) smoothScrollTo(target);
+      },
+      true,
+    );
+  });
+
+/* ─────────────────────────────
+   ALL OTHER ANCHOR LINKS
+───────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+  if (
+    anchor.classList.contains("svc-book-btn") ||
+    anchor.classList.contains("svc-book-btn-back")
+  )
+    return;
+
+  anchor.addEventListener("click", function (e) {
+    var target = document.querySelector(this.getAttribute("href"));
+    if (!target) return;
+    e.preventDefault();
+    smoothScrollTo(target);
+  });
+});
+
+/* ─────────────────────────────
+   TOAST
+───────────────────────────── */
+function showToast(message) {
+  var toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(function () {
+    toast.classList.remove("show");
+  }, 5000);
+}
+
+/* ─────────────────────────────
+   UNIFIED SELECTION LOGIC
+───────────────────────────── */
 (function initSelectionLogic() {
-  const selectedServices = new Set();
-  let selectedArea = null;
+  var selectedServices = new Set();
+  var selectedArea = null;
 
-  const svcCards = document.querySelectorAll(".svc-flip-card");
-  const fcItems = document.querySelectorAll(".fc-item");
-  const areaCities = document.querySelectorAll(".flip-card");
-  const selectedList = document.getElementById("selected-list");
+  var svcCards = document.querySelectorAll(".svc-flip-card");
+  var fcItems = document.querySelectorAll(".fc-item");
+  var areaCities = document.querySelectorAll(".flip-card");
+  var selectedList = document.getElementById("selected-list");
+  var bookBtn = document.getElementById("book-btn");
 
+  /* ── Update summary panel ── */
   function updateSummary() {
     if (!selectedList) return;
-    const allSelected = [...selectedServices];
-    if (allSelected.length === 0 && !selectedArea) {
+    var all = Array.from(selectedServices);
+    if (all.length === 0 && !selectedArea) {
       selectedList.innerHTML = '<p class="no-sel">Select services above →</p>';
       return;
     }
-    let html = "";
-    allSelected.forEach((svc) => {
-      html += `<div class="sel-item">${svc}</div>`;
+    var html = "";
+    all.forEach(function (svc) {
+      html += '<div class="sel-item">' + svc + "</div>";
     });
     if (selectedArea) {
-      html += `<div class="sel-item sel-area">📍 ${selectedArea}</div>`;
+      html += '<div class="sel-item sel-area">📍 ' + selectedArea + "</div>";
     }
     selectedList.innerHTML = html;
   }
 
+  /* ── Sync card → checklist ── */
   function syncCardToChecklist(name, state) {
-    fcItems.forEach((item) => {
+    fcItems.forEach(function (item) {
       if (item.dataset.service === name)
         item.classList.toggle("fc-checked", state);
     });
   }
 
+  /* ── Sync checklist → card ── */
   function syncChecklistToCard(name, state) {
-    svcCards.forEach((card) => {
-      const n = card.querySelector(".svc-flip-name")?.textContent?.trim();
-      if (n === name) card.classList.toggle("selected", state);
+    svcCards.forEach(function (card) {
+      var el = card.querySelector(".svc-flip-name");
+      if (el && el.textContent.trim() === name) {
+        card.classList.toggle("selected", state);
+      }
     });
   }
 
-  /* Service cards */
-  svcCards.forEach((card) => {
+  /* ── Service cards ── */
+  svcCards.forEach(function (card) {
     card.addEventListener("click", function (e) {
       if (
         e.target.closest(".svc-book-btn") ||
@@ -133,8 +216,9 @@
       )
         return;
 
-      const name = card.querySelector(".svc-flip-name")?.textContent?.trim();
-      if (!name) return;
+      var el = card.querySelector(".svc-flip-name");
+      if (!el) return;
+      var name = el.textContent.trim();
 
       card.classList.toggle("flipped");
 
@@ -147,6 +231,7 @@
         card.classList.add("selected");
         syncCardToChecklist(name, true);
       }
+
       updateSummary();
     });
 
@@ -159,11 +244,12 @@
     });
   });
 
-  /* Compact checklist */
-  fcItems.forEach((item) => {
+  /* ── Compact checklist ── */
+  fcItems.forEach(function (item) {
     item.addEventListener("click", function () {
-      const name = this.dataset.service;
+      var name = this.dataset.service;
       if (!name) return;
+
       if (selectedServices.has(name)) {
         selectedServices.delete(name);
         this.classList.remove("fc-checked");
@@ -173,20 +259,23 @@
         this.classList.add("fc-checked");
         syncChecklistToCard(name, true);
       }
+
       updateSummary();
     });
   });
 
-  /* City cards */
-  areaCities.forEach((card) => {
+  /* ── City cards ── */
+  areaCities.forEach(function (card) {
     card.addEventListener("click", function () {
-      const cityName = this.querySelector(".city-name")?.textContent?.trim();
-      if (!cityName) return;
+      var el = this.querySelector(".city-name");
+      if (!el) return;
+      var cityName = el.textContent.trim();
 
-      areaCities.forEach((c) => c.classList.remove("area-selected"));
-      areaCities.forEach((other) => {
-        if (other !== card) other.classList.remove("flipped");
+      areaCities.forEach(function (c) {
+        c.classList.remove("area-selected");
+        if (c !== card) c.classList.remove("flipped");
       });
+
       card.classList.toggle("flipped");
 
       if (selectedArea === cityName) {
@@ -195,22 +284,43 @@
         selectedArea = cityName;
         this.classList.add("area-selected");
       }
+
       updateSummary();
     });
 
-    card.addEventListener("mouseleave", () => card.classList.remove("flipped"));
+    card.addEventListener("mouseleave", function () {
+      card.classList.remove("flipped");
+    });
   });
 
-  /* Form submit */
-  const bookBtn = document.getElementById("book-btn");
+  /* ── Success state ── */
+  function onSuccess() {
+    setTimeout(function () {
+      var ff = document.querySelector(".form-fields");
+      var cl = document.querySelector(".form-checklist");
+      var ln = document.querySelector(".lic-note");
+      var st = document.querySelector(".summary-box h3");
+      var fs = document.getElementById("form-success");
+      if (ff) ff.style.display = "none";
+      if (cl) cl.style.display = "none";
+      if (ln) ln.style.display = "none";
+      if (st) st.style.display = "none";
+      if (selectedList) selectedList.style.display = "none";
+      if (bookBtn) bookBtn.style.display = "none";
+      if (fs) fs.style.display = "block";
+      showToast("✅ Request sent! We'll call you within 30 min.");
+    }, 900);
+  }
+
+  /* ── Form submit ── */
   if (bookBtn) {
     bookBtn.addEventListener("click", function () {
-      const name = document.getElementById("f-name")?.value.trim();
-      const phone = document.getElementById("f-phone")?.value.trim();
-      const email = document.getElementById("f-email")?.value.trim();
-      const location = document.getElementById("f-location")?.value.trim();
-      const notes = document.getElementById("f-notes")?.value.trim();
-      const services = [...selectedServices];
+      var name = document.getElementById("f-name").value.trim();
+      var phone = document.getElementById("f-phone").value.trim();
+      var email = document.getElementById("f-email").value.trim();
+      var location = document.getElementById("f-location").value.trim();
+      var notes = document.getElementById("f-notes").value.trim();
+      var services = Array.from(selectedServices);
 
       if (!name || !phone || !email) {
         alert("Please fill in your name, phone number, and email.");
@@ -222,96 +332,95 @@
       }
 
       bookBtn.disabled = true;
-bookBtn.textContent = 'Submitting…';
+      bookBtn.textContent = "Submitting…";
 
-/* ── EmailJS credentials — paste your real values below ── */
-var SERVICE_ID  = 'service_xxxxxxx';   /* ← your Service ID  */
-var TEMPLATE_ID = 'template_xxxxxxx';  /* ← your Template ID */
-var PUBLIC_KEY  = 'xxxxxxxxxxxxxxx';   /* ← your Public Key  */
+      /* ── EmailJS credentials ── */
+      var SERVICE_ID = "service_xxxxxxx"; /* ← replace */
+      var TEMPLATE_ID = "template_xxxxxxx"; /* ← replace */
+      var PUBLIC_KEY = "xxxxxxxxxxxxxxx"; /* ← replace */
 
-var templateParams = {
-  name:         name,
-  phone:        phone,
-  client_email: email,
-  location:     location     || 'Not specified',
-  area:         selectedArea || 'Not specified',
-  services:     services.join(', '),
-  notes:        notes        || 'None',
-  submitted:    new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-};
+      var templateParams = {
+        name: name,
+        phone: phone,
+        client_email: email,
+        location: location || "Not specified",
+        area: selectedArea || "Not specified",
+        services: services.join(", "),
+        notes: notes || "None",
+        submitted: new Date().toLocaleString("en-US", {
+          timeZone: "America/Los_Angeles",
+        }),
+      };
 
-emailjs.init(PUBLIC_KEY);
+      emailjs.init(PUBLIC_KEY);
 
-emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
-  .then(function() {
-    /* SMS alert — fires after main email succeeds */
-    emailjs.send(SERVICE_ID, 'template_smsxxxxxxx', {
-      name:     name,
-      services: services.join(', ')
+      emailjs
+        .send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(function () {
+          /* SMS alert — replace template ID with your SMS template */
+          emailjs.send(SERVICE_ID, "template_smsxxxxxxx", {
+            name: name,
+            services: services.join(", "),
+          });
+          onSuccess();
+        })
+        .catch(function (err) {
+          console.error("EmailJS error:", err);
+          /* Fallback to mailto if EmailJS fails */
+          var subject = encodeURIComponent(
+            "New PSG Sacramento Request — " + services.join(", "),
+          );
+          var body = encodeURIComponent(
+            "Name:         " +
+              name +
+              "\nPhone:        " +
+              phone +
+              "\nEmail:        " +
+              email +
+              "\nLocation:     " +
+              (location || "Not specified") +
+              "\nService Area: " +
+              (selectedArea || "Not specified") +
+              "\nServices:     " +
+              services.join(", ") +
+              "\nNotes:        " +
+              (notes || "None"),
+          );
+          window.open(
+            "mailto:sacramento@profsecurity.com?subject=" +
+              subject +
+              "&body=" +
+              body,
+            "_blank",
+          );
+          onSuccess();
+        });
     });
-    onSuccess();
-  })
-  .catch(function(err) {
-    console.error('EmailJS error:', err);
-    /* Fallback to mailto if EmailJS fails */
-    var subject = encodeURIComponent('New PSG Sacramento Request — ' + services.join(', '));
-    var body    = encodeURIComponent(
-      'Name: ' + name + '\nPhone: ' + phone + '\nEmail: ' + email +
-      '\nArea: ' + (selectedArea || 'Not specified') +
-      '\nServices: ' + services.join(', ') +
-      '\nNotes: ' + (notes || 'None')
-    );
-    window.open('mailto:sacramento@profsecurity.com?subject=' + subject + '&body=' + body, '_blank');
-    onSuccess();
-  });
+  }
+})();
 
-function onSuccess() {
-  setTimeout(function() {
-    var ff = document.querySelector('.form-fields');
-    var cl = document.querySelector('.form-checklist');
-    var ln = document.querySelector('.lic-note');
-    var st = document.querySelector('.summary-box h3');
-    var fs = document.getElementById('form-success');
-    if (ff) ff.style.display = 'none';
-    if (cl) cl.style.display = 'none';
-    if (ln) ln.style.display = 'none';
-    if (st) st.style.display = 'none';
-    if (selectedList) selectedList.style.display = 'none';
-    bookBtn.style.display = 'none';
-    if (fs) fs.style.display = 'block';
-    showToast('✅ Request sent! We\'ll call you within 30 min.');
-  }, 900);
-}
-}());
-
-/* ── TOAST ── */
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 5000);
-}
-
-/* ── CAROUSEL ── */
+/* ─────────────────────────────
+   CAROUSEL
+───────────────────────────── */
 (function initCarousel() {
-  const track = document.getElementById("carousel-track");
+  var track = document.getElementById("carousel-track");
   if (!track) return;
-  const originals = [...track.children];
-  originals.forEach((card) => {
-    const clone = card.cloneNode(true);
+  Array.from(track.children).forEach(function (card) {
+    var clone = card.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
     track.appendChild(clone);
   });
 })();
 
-/* ── SCROLL REVEAL ── */
+/* ─────────────────────────────
+   SCROLL REVEAL
+───────────────────────────── */
 (function initReveal() {
-  const targets = document.querySelectorAll(".reveal");
+  var targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;
-  const obs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
+  var obs = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (e) {
         if (e.isIntersecting) {
           e.target.classList.add("in");
           obs.unobserve(e.target);
@@ -320,38 +429,7 @@ function showToast(message) {
     },
     { threshold: 0.12 },
   );
-  targets.forEach((el) => obs.observe(el));
-})();
-
-/* ── SMOOTH SCROLL + BOOK NOW BUTTONS ── */
-(function initScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const target = document.querySelector(this.getAttribute("href"));
-      if (!target) return;
-      e.preventDefault();
-      const headerH = document.querySelector("header")?.offsetHeight || 68;
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY - headerH - 12,
-        behavior: "smooth",
-      });
-    });
+  targets.forEach(function (el) {
+    obs.observe(el);
   });
-
-  document
-    .querySelectorAll(".svc-book-btn, .svc-book-btn-back")
-    .forEach((btn) => {
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const target = document.getElementById("request-form");
-        if (!target) return;
-        const headerH = document.querySelector("header")?.offsetHeight || 68;
-        window.scrollTo({
-          top:
-            target.getBoundingClientRect().top + window.scrollY - headerH - 12,
-          behavior: "smooth",
-        });
-      });
-    });
 })();
