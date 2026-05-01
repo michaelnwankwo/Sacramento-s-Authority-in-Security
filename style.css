@@ -82,7 +82,7 @@ header {
 .logo {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 9px;
 }
 
 .logo-text .name {
@@ -1211,7 +1211,7 @@ footer {
   }
 
   header {
-    padding: 0 20px;
+    padding: 50px 5px;
     height: 64px;
   }
 
@@ -1221,23 +1221,23 @@ footer {
   } */
 
   .logo-img {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
   }
 
-  .logo-fallback {
+  /* .logo-fallback {
     width: 36px;
     height: 36px;
     font-size: 11px;
-  }
+  } */
 
   .logo-text .name {
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    font-size: 19px;
+    letter-spacing: 0.2px;
   }
 
   .logo-text .branch {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
 
