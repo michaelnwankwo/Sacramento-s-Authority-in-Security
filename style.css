@@ -420,7 +420,7 @@ section {
   align-items: center;
   gap: 10px;
   font-family: var(--font-head);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -612,7 +612,7 @@ section {
 }
 
 .no-sel {
-  color: var(--gray-3);
+  color: #ffffff8e;
   font-size: 13px;
   font-style: italic;
   padding: 8px 0;
