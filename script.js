@@ -335,9 +335,9 @@ function showToast(message) {
       bookBtn.textContent = "Submitting…";
 
       /* ── EmailJS credentials ── */
-      var SERVICE_ID = "service_xxxxxxx"; /* ← replace */
-      var TEMPLATE_ID = "template_xxxxxxx"; /* ← replace */
-      var PUBLIC_KEY = "xxxxxxxxxxxxxxx"; /* ← replace */
+      var SERVICE_ID = "service_b786eyn"; /* ← replace */
+      var TEMPLATE_ID = "template_tjq0rp7"; /* ← replace */
+      var PUBLIC_KEY = "wlLD-b1nzgPAws_Qj"; /* ← replace */
 
       var templateParams = {
         name: name,
