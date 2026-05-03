@@ -353,14 +353,21 @@ function showToast(message) {
       };
 
       emailjs.init(PUBLIC_KEY);
-
       emailjs
         .send(SERVICE_ID, TEMPLATE_ID, templateParams)
         .then(function () {
-          /* SMS alert — replace template ID with your SMS template */
-          emailjs.send(SERVICE_ID, "template_smsxxxxxxx", {
+          /* SMS via AT&T email-to-text gateway */
+          emailjs.send(SERVICE_ID, TEMPLATE_ID, {
             name: name,
+            phone: phone,
+            client_email: "2792299001@txt.att.net",
+            location: "",
+            area: selectedArea || "Not specified",
             services: services.join(", "),
+            notes: "",
+            submitted: new Date().toLocaleString("en-US", {
+              timeZone: "America/Los_Angeles",
+            }),
           });
           onSuccess();
         })
