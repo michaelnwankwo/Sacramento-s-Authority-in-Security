@@ -1935,3 +1935,37 @@ footer {
   transform: scale(1.05);
   background: rgba(255, 255, 255, 0.1);
 }
+
+.svc-flip-front,
+.svc-flip-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.svc-flip-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+.svc-flip-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+.svc-flip-card.flipped .svc-flip-front {
+  z-index: 1;
+}
+.svc-flip-card.flipped .svc-flip-back {
+  z-index: 2;
+}
+
+.svc-flip-inner {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.svc-book-btn,
+.svc-book-btn-back {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
