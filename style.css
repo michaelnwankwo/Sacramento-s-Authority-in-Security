@@ -1936,36 +1936,59 @@ footer {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.svc-flip-front,
-.svc-flip-back {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+/* ── FLIP CARD OVERLAP NUCLEAR FIX ── */
+.svc-flip-card {
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+.svc-flip-inner {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: transform 0.6s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  transition: transform 0.6s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+.svc-flip-card.flipped .svc-flip-inner {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .svc-flip-front {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: rotateY(0deg);
   transform: rotateY(0deg);
+  position: absolute;
+  inset: 0;
   z-index: 2;
 }
+
 .svc-flip-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
+  position: absolute;
+  inset: 0;
   z-index: 1;
 }
 
 .svc-flip-card.flipped .svc-flip-front {
   z-index: 1;
-}
-.svc-flip-card.flipped .svc-flip-back {
-  z-index: 2;
+  pointer-events: none;
 }
 
-.svc-flip-inner {
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
+.svc-flip-card.flipped .svc-flip-back {
+  z-index: 2;
+  pointer-events: auto;
 }
 
 .svc-book-btn,
 .svc-book-btn-back {
   position: relative;
-  z-index: 3;
+  z-index: 10;
   pointer-events: auto;
+  -webkit-transform: translateZ(1px);
+  transform: translateZ(1px);
 }
