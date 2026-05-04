@@ -120,8 +120,16 @@ document
       function (e) {
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         var target = document.getElementById("request-form");
-        if (target) smoothScrollTo(target);
+        if (!target) return;
+        var headerH =
+          (document.querySelector("header") || {}).offsetHeight || 68;
+        window.scrollTo({
+          top:
+            target.getBoundingClientRect().top + window.scrollY - headerH - 12,
+          behavior: "smooth",
+        });
       },
       true,
     );
